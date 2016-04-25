@@ -1,5 +1,5 @@
 <section class="list">
-	<ol>
+	<ul>
 		<li ng-repeat="bug in (bugs.list | filter:searchBug | orderBy:sortBug:sortBugOrder)">
 			<span class="bugName" ng-class="{closed :bug.isClosed}" ng-click="bugs.toggle(bug)">
 				{{bug.name | trimText:30}}
@@ -7,5 +7,5 @@
 			<div class="datetime">{{bug.createdAt | elapsed}}</div>
 			<div><a href="#/detail/{{bug.id}}">Details</a></div>
 		</li>
-	</ol>
+	</ul>
 </section>

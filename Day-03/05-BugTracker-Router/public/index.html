@@ -33,6 +33,24 @@
 	.datetime{
 		font-style: italic;
 	}
+        ul {
+          list-style-type: none;
+          overflow: auto;
+        }
+         ul li {
+           margin: 10px;
+           width: 400px;
+           float: left;
+        }
+        ul li span {
+          border: 5px solid #fff;
+
+          -webkit-transition: box-shadow 0.5s ease;
+          -moz-transition: box-shadow 0.5s ease;
+          -o-transition: box-shadow 0.5s ease;
+          -ms-transition: box-shadow 0.5s ease;
+          transition: box-shadow 0.5s ease;
+        }
 	</style>
 	<script src="angular.min.js"></script>
 	<script src="angular-route.js"></script>
@@ -79,6 +97,10 @@
 					templateUrl : 'templates/bugsList.html',
 					controller : 'bugsController'
 				})
+				.when("/thumb", {
+					templateUrl : 'templates/bugsThumbList.html',
+					controller : 'bugsController'
+				})
 				.when('/create', {
 					templateUrl : 'templates/newBug.html',
 					controller : 'bugsEditController'
@@ -93,15 +115,10 @@
 		})
 	</script>
 	<script src="bugServices.js"></script>
-
 	<script>
-		
-
-
 		bugTrackerApp.controller("bugsController", function($scope, bugsCollection){
 			$scope.bugs = bugsCollection;
 		});
-
 		bugTrackerApp.controller('bugDetailsController', function($scope, bugService, $routeParams){
 			bugService
 				.getById(parseInt($routeParams.id,10))
@@ -110,7 +127,6 @@
 				});
 
 		});
-
 		bugTrackerApp.controller("bugsEditController", function($scope, bugsCollection){
 			$scope.addNew = function(){
 				bugsCollection.addNew($scope.newBugName);
@@ -118,22 +134,27 @@
 				$scope.goto('list');
 			};
 		});		
-
-		
-
 		bugTrackerApp.controller("bugsNavController", function($scope){
-			
 		});
+		bugTrackerApp.directive("bugDashboard", function(){
+			return {
+				controller: 'bugsController',
+				templateUrl : 'templates/bugsDashboard.html'
+			}
+		})
 
 		bugTrackerApp.directive("bugList", function(){
 			return {
-				scope : {
-					data : '='
-				},
+				scope: true,
 				templateUrl : 'templates/bugsDisplay.html'
 			}
 		})
-		
+		bugTrackerApp.directive("bugThumb", function(){
+			return {
+				scope: true,
+				templateUrl : 'templates/bugsThumbDisplay.html'
+			}
+		})
 	</script>
 </head>
 <body ng-app="bugTrackerApp">
@@ -143,10 +164,10 @@
 		<section>
 			<span><a href="#/create" >Create</a></span>
 			<span><a href="#/list" >List</a></span>
+			<span><a href="#/thumb" >Thumb</a></span>
 		</section>
-		<ng-view></ng-view>
-		
+		<ng-view>
+                </ng-view>
 	</div>
-	
 </body>
 </html>
